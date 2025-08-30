@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Laudário Radiologia</title>
+  <style>
+    :root{
+      /* Paleta */
+      --bg:#1e2a38;        /* fundo escuro */
+      --panel:#334155;     /* coluna */
+      --title:#9ec5d3;     /* títulos azul acinzentado */
+      --card:#f1f5f9;      /* cartões */
+      --card-hover:#e2e8f0;
+      --text:#0f172a;
+
+      /* Tamanhos (A/B/C via classe no <body>) */
+      --fs-h1:20px;
+      --fs-h2:16px;
+      --fs-body:13px;
+      --radius:12px;
+      --gap:16px;
+    }
+
+    body.sz-A{ --fs-h1:20px; --fs-h2:16px; --fs-body:13px; }
+    body.sz-B{ --fs-h1:22px; --fs-h2:18px; --fs-body:15px; }
+    body.sz-C{ --fs-h1:24px; --fs-h2:20px; --fs-body:17px; }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:16px;
+      font-family: Georgia, "Times New Roman", Times, serif;
+      background:var(--bg);
+      color:#fff;
+    }
+    header{
+      position:sticky; top:0; z-index:5;
+      background:linear-gradient(180deg, rgba(30,42,56,.95), rgba(30,42,56,.75));
+      backdrop-filter:saturate(140%) blur(4px);
+      padding:12px 8px 10px; border-radius:10px;
+      display:grid; gap:8px;
+    }
+    h1{
+      margin:0;
+      font-size:var(--fs-h1);
+      text-align:center;
+      letter-spacing:.3px;
+    }
+    .controls{
+      display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap;
+    }
+    #search{
+      flex:1 1 420px;
+      min-width:260px;
+      border:1px solid #475569; outline:none;
+      background:#0b1220; color:#e2e8f0;
+      padding:10px 12px; border-radius:10px;
+      font-size:var(--fs-body);
+    }
+    #size{
+      border:1px solid #475569; background:#0b1220; color:#e2e8f0;
+      padding:10px 12px; border-radius:10px; font-size:var(--fs-body);
+    }
+
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+      gap:var(--gap);
+    }
+    .column{
+      background:var(--panel);
+      border-radius:var(--radius);
+      padding:12px;
+      box-shadow:0 4px 14px rgba(0,0,0,.25);
+    }
+    .organ{
+      font-weight:700;
+      color:var(--title);
+      font-size:var(--fs-h2);
+      margin:2px 0 10px 0;
+      letter-spacing:.2px;
+    }
+    .card{
+      background:var(--card);
+      color:var(--text);
+      font-size:var(--fs-body);
+      line-height:1.35;
+      border-radius:10px;
+      padding:8px 10px;
+      margin-bottom:8px;
+      cursor:pointer;
+      border:1px solid #cbd5e1;
+      transition:transform .08s ease, background .12s ease, box-shadow .12s ease;
+      user-select:none;
+    }
+    .card:hover{ background:var(--card-hover); transform:translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,.12); }
+    .muted{opacity:.75}
+
+    .toast{
+      position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+      background:#0b1220; color:#e2e8f0; padding:8px 12px; border-radius:10px;
+      font-size:12px; border:1px solid #334155; opacity:0; pointer-events:none;
+      transition:opacity .2s ease;
+    }
+    .toast.show{opacity:1}
+  </style>
+</head>
+<body class="sz-A">
+  <header>
+    <h1>📑 Laudário Radiologia</h1>
+    <div class="controls">
+      <input id="search" type="text" placeholder="Busque por órgão ou texto (ex.: pulmão, hemorragia, nódulo)..." />
+      <select id="size" title="Tamanho da interface">
+        <option value="A" selected>Tamanho A (pequeno)</option>
+        <option value="B">Tamanho B (médio)</option>
+        <option value="C">Tamanho C (maior)</option>
+      </select>
+    </div>
+  </header>
+
+  <main id="grid" class="grid" aria-live="polite"></main>
+  <div id="toast" class="toast">Copiado!</div>
+
+  <script>
+    const TXT_PATH = "laudario.txt";
+    const grid = document.getElementById("grid");
+    const search = document.getElementById("search");
+    const toast = document.getElementById("toast");
+    const sizeSel = document.getElementById("size");
+    const state = { data: [], query: "" };
+
+    // ---- Tamanho persistente
+    const savedSize = localStorage.getItem("laudario:size") || "A";
+    document.body.classList.remove("sz-A","sz-B","sz-C");
+    document.body.classList.add("sz-"+savedSize);
+    sizeSel.value = savedSize;
+    sizeSel.addEventListener("change", ()=>{
+      const v = sizeSel.value;
+      document.body.classList.remove("sz-A","sz-B","sz-C");
+      document.body.classList.add("sz-"+v);
+      localStorage.setItem("laudario:size", v);
+    });
+
+    function showToast(msg="Copiado!"){
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(()=>toast.classList.remove("show"), 900);
+    }
+
+    async function loadTXT(){
+      const res = await fetch(TXT_PATH, {cache:"no-store"});
+      const text = await res.text();
+      state.data = parseTXT(text);
+      render();
+    }
+
+    // [Órgão] linhas de frases...
+    function parseTXT(text){
+      const lines = text.split(/\r?\n/), out=[]; let current=null;
+      for (const raw of lines){
+        const line = raw.trim();
+        if (!line) continue;
+        if (line.startsWith("[") && line.endsWith("]")){
+          current = { organ: line.slice(1,-1), phrases: [] };
+          out.push(current);
+        } else if (current){
+          current.phrases.push(line);
+        }
+      }
+      out.sort((a,b)=>a.organ.localeCompare(b.organ,"pt-BR"));
+      return out;
+    }
+
+    function render(){
+      grid.innerHTML = "";
+      const q = state.query.toLowerCase();
+
+      state.data.forEach(block=>{
+        const matchesOrgan = block.organ.toLowerCase().includes(q);
+        const phrases = block.phrases.filter(p=> matchesOrgan || p.toLowerCase().includes(q));
+        if (!phrases.length) return;
+
+        const col = document.createElement("section");
+        col.className = "column";
+
+        const h = document.createElement("div");
+        h.className = "organ";
+        h.textContent = block.organ;
+        col.appendChild(h);
+
+        phrases.forEach(p=>{
+          const card = document.createElement("div");
+          card.className = "card";
+          card.textContent = p;
+          card.title = "Clique para copiar";
+          card.addEventListener("click", async ()=>{
+            try{ await navigator.clipboard.writeText(p); showToast("Copiado"); }
+            catch(e){ showToast("Não foi possível copiar"); }
+          });
+          col.appendChild(card);
+        });
+
+        grid.appendChild(col);
+      });
+
+      if (!grid.children.length){
+        const empty = document.createElement("div");
+        empty.className = "column";
+        empty.innerHTML = `<div class="organ">Sem resultados</div><div class="card muted">Tente outra palavra-chave ou limpe a busca.</div>`;
+        grid.appendChild(empty);
+      }
+    }
+
+    search.addEventListener("input", e=>{ state.query = e.target.value; render(); });
+    loadTXT();
+  </script>
+</body>
+</html>
