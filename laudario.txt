@@ -103,3 +103,6 @@ Metástase: Corpo vertebral de L4 com 2 focos radiodensos, de aspecto indetermin
 [Bexiga]
 Bexiga de esforço: Bexiga urinária com boa distensibilidade, forma e contornos normais. A parede vesical apresenta trabeculações, sugestivo de bexiga de esforço.
 
+[Ovários]
+Não visualizado: Ovário direito/esquerdo não visualizado por provável atrofia e interposição de alças intestinais.
+
