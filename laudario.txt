@@ -25,7 +25,7 @@ Aneurisma: Aneurisma fusiforme da aorta infrarrenal com 47 x 42 mm (LLxCC), dist
 Mastectomia: Mastectomia direita e reconstrução com retalho miocutâneo e prótese com conteúdo anecoico, sem sinais de rotura.
 Cistos oleosos: Cistos oleosos subcicatriciais esparsos à esquerda, medindo até cerca de 8 mm.
 Calcificações: Calcificações grosseiras na mama direita.
-Pós-operatório: Cicatriz cutânea nos quadrantes laterais da mama esquerda com desorganização arquitetural do parênquima sobrejacente, contornos lobulados com pregas radiais.
+Pós-operatório: Cicatriz cutânea nos quadrantes laterais da mama [x] com desorganização arquitetural do parênquima sobrejacente, contornos lobulados com pregas radiais.
 Ginecomastia: Discreta ginecomastia bilateral simétrica.
 Mastectomia e expansor: Mastectomia esquerda com interposição de expansor mamário, sem particularidades ao método.
 Mastectomia e prótese: Mastectomia esquerda e reconstrução por prótese. Implante mamário à direita.
@@ -105,4 +105,5 @@ Bexiga de esforço: Bexiga urinária com boa distensibilidade, forma e contornos
 
 [Ovários]
 Não visualizado: Ovário direito/esquerdo não visualizado por provável atrofia e interposição de alças intestinais.
+
 
