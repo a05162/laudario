@@ -6,30 +6,25 @@
   <title>Laudário Radiologia</title>
   <style>
     :root {
-      --bg: #0f172a;          /* slate-900 */
-      --panel: #111827;       /* gray-900 */
-      --muted: #94a3b8;       /* slate-400 */
-      --text: #e5e7eb;        /* gray-200 */
-      --accent: #38bdf8;      /* sky-400 */
-      --accent-2: #22d3ee;    /* cyan-400 */
-      --border: #1f2937;      /* gray-800 */
-      /* Tons de azul (mais claros) para cartões */
-      --cat-bg: #0e2a47;      /* fundo do card de CATEGORIA */
-      --cat-head: #0f3457;    /* cabeçalho do card */
-      --phrase-bg: #123a63;   /* fundo de cada frase */
-      --phrase-border: #1a4a7c;/* borda de cada frase */
+      --bg: #0f172a;
+      --panel: #111827;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --accent: #38bdf8;
+      --accent-2: #22d3ee;
+      --border: #1f2937;
+      --cat-bg: #0e2a47;
+      --cat-head: #0f3457;
+      --phrase-bg: #123a63;
+      --phrase-border: #1a4a7c;
     }
     html, body { height: 100%; background: var(--bg); color: var(--text); }
     body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
-
-    /* Tamanhos A/B/C (ciclo) */
     html.sizeA { font-size: 15px; }
     html.sizeB { font-size: 17px; }
     html.sizeC { font-size: 19px; }
-
     .app { display: grid; grid-template-rows: auto auto 1fr; min-height: 100vh; }
 
-    /* Cabeçalho */
     header {
       position: sticky; top: 0; z-index: 10;
       display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
@@ -39,41 +34,27 @@
     }
     .brand { display: flex; align-items: center; gap: .5rem; }
     .brand .dot { width: .6rem; height: .6rem; border-radius: 9999px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 0 .2rem rgba(34,211,238,.15); }
-
-    /* Seletor de órgão (canto superior esquerdo) */
     .org-select { display:flex; align-items:center; gap:.5rem; }
     .org-select select {
       background: #0b2540; color: var(--text); border: 1px solid var(--border);
       border-radius: .65rem; padding: .45rem .6rem; outline: none; cursor: pointer;
     }
-
-    /* Busca (centro) */
     .search { justify-self: center; width: min(680px, 95%); }
     .search input {
       width: 100%; background: #0a1020; color: var(--text); border: 1px solid var(--border);
       padding: .55rem .8rem; border-radius: .7rem; outline: none;
     }
-
-    /* Espaçador à direita do header */
     .header-right { justify-self: end; height: 1rem; }
-
-    /* Barra de categorias: oculta (renderiza tudo de uma vez) */
     .categories { display:none; }
-
-    /* Área principal */
     main { padding: 1rem; }
-
-    /* Grid de cards de CATEGORIA (cada card = uma categoria com várias frases) */
-    .cat-grid {
-      display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
-    }
+    .cat-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
     .cat-card {
       background: var(--cat-bg); border:1px solid #0c2038; border-radius: 1rem; overflow: hidden; display:flex; flex-direction: column;
       box-shadow: 0 8px 24px rgba(2, 12, 24, .35);
     }
     .cat-head {
       display:flex; align-items:center; justify-content: space-between; gap:.75rem;
-      padding: .75rem .9rem; border-bottom:1px solid #0c2038; background: linear-gradient(180deg, var(--cat-head), rgba(14,42,71,.8));
+      padding:.75rem .9rem; border-bottom:1px solid #0c2038; background: linear-gradient(180deg, var(--cat-head), rgba(14,42,71,.8));
     }
     .cat-title { font-weight: 700; letter-spacing:.2px; }
     .cat-actions { display:flex; align-items:center; gap:.35rem; }
@@ -82,8 +63,6 @@
       border:1px solid #0c2038; background: rgba(255,255,255,.06); color: var(--text); cursor:pointer;
     }
     .btn-icon:hover { border-color: var(--accent); box-shadow: 0 0 0 .12rem rgba(56,189,248,.12) inset; }
-
-    /* Lista de frases por categoria */
     .phrases { display:flex; flex-direction: column; gap:.5rem; padding:.8rem; }
     .phrase {
       background: var(--phrase-bg); border:1px solid var(--phrase-border); border-radius:.75rem;
@@ -91,8 +70,6 @@
     }
     .phrase:hover { border-color: var(--accent); box-shadow: 0 0 0 .15rem rgba(56,189,248,.08) inset; }
     .copy-hint { position:absolute; right:.6rem; bottom:.45rem; color: rgba(229,231,235,.8); opacity:.8; font-size:.74rem; }
-
-    /* FAB (canto inferior direito) */
     .fab {
       position: fixed; right: 1rem; bottom: 1rem; z-index: 20;
       width: 48px; height: 48px; border-radius: 9999px; display: grid; place-items: center;
@@ -101,9 +78,7 @@
       font-weight: 700;
     }
     .fab:active { transform: translateY(1px); }
-
     footer { color: var(--muted); text-align: center; padding: .6rem 1rem 1.2rem; }
-
     @media (max-width: 520px) {
       .search { display:none; }
       header { grid-template-columns: 1fr auto; }
@@ -115,26 +90,17 @@
 <body>
   <div class="app">
     <header>
-      <!-- ESQUERDA: seletor de órgão -->
       <div class="brand org-select">
         <span class="dot" aria-hidden="true"></span>
         <label for="organSelect" class="sr-only">Órgão</label>
         <select id="organSelect"></select>
       </div>
-
-      <!-- CENTRO: busca (filtra as frases, mantendo agrupamento por categoria) -->
       <div class="search">
         <input id="searchInput" type="search" placeholder="Buscar frase… (Enter para aplicar)" />
       </div>
-
-      <!-- DIREITA: placeholder visual -->
       <div class="header-right"></div>
     </header>
 
-    <!-- Barra de categorias (oculta neste modo) -->
-    <nav class="categories" id="categoryBar"></nav>
-
-    <!-- Conteúdo: cards de CATEGORIA, cada um com várias frases -->
     <main>
       <div class="cat-grid" id="catGrid"></div>
     </main>
@@ -144,43 +110,24 @@
     </footer>
   </div>
 
-  <!-- FAB no canto inferior direito: ciclo de tamanho A/B/C -->
   <button id="sizeFab" class="fab" title="Ajustar tamanho">+Aa</button>
 
   <script>
-  // ---------- Estado / Banco em memória ----------
-  const DB = new Map();          // organ -> Map(category -> string[])
-  const ORG_ORDER = [];          // ordem estável de órgãos
+  const DB = new Map();
+  const ORG_ORDER = [];
   const DEFAULT_CATEGORY = 'Geral';
   let currentOrgan = null;
   let currentQuery = '';
 
-  // ---------- Utilidades ----------
   const qs = (sel, el=document) => el.querySelector(sel);
-  const qsa = (sel, el=document) => Array.from(el.querySelectorAll(sel));
-  const normalize = s => s
-    .normalize('NFD').replace(/\p{Diacritic}+/gu, '') // remove acentos
-    .toLowerCase();
+  const normalize = s => s.normalize('NFD').replace(/\p{Diacritic}+/gu, '').toLowerCase();
 
-  function saveUI() {
-    localStorage.setItem('ui.size', document.documentElement.className);
-  }
-  function restoreUI() {
-    const cls = localStorage.getItem('ui.size');
-    if (cls) document.documentElement.className = cls;
-    else document.documentElement.classList.add('sizeB'); // default
-  }
-
-  // ---------- Parser do laudario.txt ----------
-  /* Aceita [Órgão] e [Órgão > Categoria]. */
   function parseLaudario(txt) {
     DB.clear(); ORG_ORDER.length = 0;
     let organ = null, category = null;
-
     for (const rawLine of txt.split(/\r?\n/)) {
       const line = rawLine.trim();
       if (!line || line.startsWith('#') || line.startsWith(';')) continue;
-
       const sect = line.match(/^\[(.+?)\]$/);
       if (sect) {
         const parts = sect[1].split('>').map(s => s.trim());
@@ -190,7 +137,6 @@
         if (!DB.get(organ).has(category)) DB.get(organ).set(category, []);
         continue;
       }
-
       if (organ) {
         const catMap = DB.get(organ);
         if (!catMap.has(category)) catMap.set(category, []);
@@ -199,7 +145,6 @@
     }
   }
 
-  // ---------- Renderização ----------
   function renderOrganSelect() {
     const sel = qs('#organSelect');
     sel.innerHTML = '';
@@ -215,37 +160,23 @@
     const grid = qs('#catGrid');
     grid.innerHTML = '';
     if (!currentOrgan) return;
-
     const catMap = DB.get(currentOrgan);
     if (!catMap) return;
-
-    // Ordena categorias alfabeticamente
     const cats = Array.from(catMap.entries()).sort((a,b) => a[0].localeCompare(b[0]));
-
     for (const [cat, list] of cats) {
-      // Filtra por busca
-      const items = currentQuery
-        ? list.filter(x => normalize(x).includes(normalize(currentQuery)))
-        : list.slice();
-
-      if (!items.length) continue; // Oculta categoria sem resultados
-
+      const items = currentQuery ? list.filter(x => normalize(x).includes(normalize(currentQuery))) : list.slice();
+      if (!items.length) continue;
       const card = document.createElement('section');
       card.className = 'cat-card';
-
-      // Cabeçalho da categoria
       const head = document.createElement('div');
       head.className = 'cat-head';
       const title = document.createElement('div');
       title.className = 'cat-title';
       title.textContent = cat;
-
       const actions = document.createElement('div');
       actions.className = 'cat-actions';
       const copyAllBtn = document.createElement('button');
       copyAllBtn.className = 'btn-icon';
-      copyAllBtn.setAttribute('aria-label', 'Copiar todas as frases desta categoria');
-      copyAllBtn.title = 'Copiar todas as frases desta categoria';
       copyAllBtn.textContent = '📋';
       copyAllBtn.addEventListener('click', () => {
         const txt = items.join('\n\n');
@@ -256,25 +187,19 @@
         });
       });
       actions.appendChild(copyAllBtn);
-
       head.appendChild(title);
       head.appendChild(actions);
-
-      // Lista de frases
       const ul = document.createElement('div');
       ul.className = 'phrases';
-
       for (const text of items) {
         const li = document.createElement('div');
         li.className = 'phrase';
         li.tabIndex = 0;
         li.innerText = text;
-
         const hint = document.createElement('small');
         hint.className = 'copy-hint';
         hint.textContent = 'Copiar';
         li.appendChild(hint);
-
         const copy = () => {
           navigator.clipboard.writeText(text).then(() => {
             hint.textContent = 'Copiado!';
@@ -283,16 +208,12 @@
         };
         li.addEventListener('click', copy);
         li.addEventListener('keydown', (e) => { if (e.key === 'Enter') copy(); });
-
         ul.appendChild(li);
       }
-
       card.appendChild(head);
       card.appendChild(ul);
       grid.appendChild(card);
     }
-
-    // Caso nenhuma categoria tenha resultado
     if (!grid.children.length) {
       const p = document.createElement('p');
       p.style.color = 'var(--muted)';
@@ -301,43 +222,36 @@
     }
   }
 
-  // ---------- Navegação (hash router simplificado) ----------
+  // ---------- Navegação corrigida ----------
   function parseHash() {
-    // Formato: #/orgao/<Órgão>?q=busca
     const h = location.hash.slice(1);
     const [path, queryStr] = h.split('?');
     const parts = (path || '').split('/').filter(Boolean);
-    let org = parts[1] || null;
+    let org = parts[1] ? decodeURIComponent(parts[1]) : null;
     const query = new URLSearchParams(queryStr || '').get('q') || '';
     return { org, query };
   }
 
   function navigate(org, query = currentQuery) {
     if (!org) org = ORG_ORDER[0];
+    const encoded = encodeURIComponent(org);
     const params = new URLSearchParams();
     if (query) params.set('q', query);
     const qsuf = params.toString();
-    location.hash = `#/orgao/${encodeURIComponent(org)}${qsuf ? '?' + qsuf : ''}`;
+    location.hash = `#/orgao/${encoded}${qsuf ? '?' + qsuf : ''}`;
   }
 
   function applyRoute() {
     const r = parseHash();
     currentOrgan = r.org && DB.has(r.org) ? r.org : ORG_ORDER[0];
     currentQuery = r.query || '';
-
-    // Sync UI
     renderOrganSelect();
     qs('#searchInput').value = currentQuery;
     renderCategoryCards();
   }
-
   window.addEventListener('hashchange', applyRoute);
 
-  // ---------- Eventos de UI ----------
-  qs('#organSelect').addEventListener('change', (e) => {
-    navigate(e.target.value, '');
-  });
-
+  qs('#organSelect').addEventListener('change', (e) => navigate(e.target.value, ''));
   qs('#searchInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       currentQuery = e.currentTarget.value.trim();
@@ -355,7 +269,6 @@
     localStorage.setItem('ui.size', html.className);
   });
 
-  // ---------- Inicialização ----------
   (async function init(){
     const cls = localStorage.getItem('ui.size');
     if (cls) document.documentElement.className = cls; else document.documentElement.classList.add('sizeB');
@@ -363,11 +276,7 @@
       const res = await fetch('laudario.txt');
       const txt = await res.text();
       parseLaudario(txt);
-
-      if (ORG_ORDER.length) {
-        currentOrgan = ORG_ORDER[0];
-      }
-
+      if (ORG_ORDER.length) currentOrgan = ORG_ORDER[0];
       renderOrganSelect();
       applyRoute();
     } catch (e) {
