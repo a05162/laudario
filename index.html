@@ -16,6 +16,7 @@
       --chip: #0b2540;        /* chip bg */
       --chip-active: #1d4ed8; /* indigo-600 */
       --border: #1f2937;      /* gray-800 */
+      --good: #16a34a;        /* green-600 */
     }
     html, body { height: 100%; background: var(--bg); color: var(--text); }
     body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
@@ -39,14 +40,14 @@
     .brand .dot { width: .6rem; height: .6rem; border-radius: 9999px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 0 .2rem rgba(34,211,238,.15); }
     .brand h1 { font-size: 1.05rem; margin: 0; font-weight: 600; letter-spacing:.2px; }
 
-    /* Seletor de órgão (fica no canto superior esquerdo) */
+    /* Seletor de órgão (canto superior esquerdo) */
     .org-select { display:flex; align-items:center; gap:.5rem; }
     .org-select select {
       background: var(--chip); color: var(--text); border: 1px solid var(--border);
       border-radius: .65rem; padding: .45rem .6rem; outline: none; cursor: pointer;
     }
 
-    /* Busca opcional (mantida) */
+    /* Busca (centro) */
     .search { justify-self: center; width: min(680px, 95%); }
     .search input {
       width: 100%; background: #0a1020; color: var(--text); border: 1px solid var(--border);
@@ -56,32 +57,42 @@
     /* Espaçador à direita do header */
     .header-right { justify-self: end; height: 1rem; }
 
-    /* Barra de categorias (chips) */
-    .categories {
-      display:flex; flex-wrap:wrap; gap:.5rem; padding: .5rem 1rem .75rem; border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(11,18,32,.7), transparent);
-    }
-    .chip {
-      display:inline-flex; align-items:center; gap:.4rem; padding: .4rem .7rem; border-radius: 9999px;
-      background: var(--chip); color: var(--text); border:1px solid var(--border); cursor: pointer; user-select: none;
-      transition: transform .05s ease;
-    }
-    .chip:hover { transform: translateY(-1px); }
-    .chip.active { background: var(--chip-active); border-color: var(--chip-active); }
+    /* Barra de categorias: oculta neste modo (renderiza tudo de uma vez) */
+    .categories { display:none; }
 
-    /* Grid de cards */
+    /* Área principal */
     main { padding: 1rem; }
-    .grid {
-      display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: .75rem;
-    }
-    .card {
-      background: var(--card); border:1px solid var(--border); padding:.8rem; border-radius: .9rem; line-height: 1.35rem;
-      cursor: copy; position: relative; overflow: hidden;
-    }
-    .card:hover { border-color: var(--accent); box-shadow: 0 0 0 .15rem rgba(56,189,248,.08) inset; }
-    .card small.copy-hint { position:absolute; right:.6rem; bottom:.5rem; color: var(--muted); opacity:.75; font-size:.73rem; }
 
-    /* FAB do tamanho de fonte (canto inferior direito) */
+    /* Grid de cards de CATEGORIA (cada card = uma categoria com várias frases) */
+    .cat-grid {
+      display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
+    }
+    .cat-card {
+      background: var(--card); border:1px solid var(--border); border-radius: 1rem; overflow: hidden; display:flex; flex-direction: column;
+    }
+    .cat-head {
+      display:flex; align-items:center; justify-content: space-between; gap:.75rem;
+      padding: .75rem .9rem; border-bottom:1px solid var(--border); background: linear-gradient(180deg, rgba(11,18,32,.7), rgba(11,18,32,.4));
+    }
+    .cat-title { font-weight: 700; letter-spacing:.2px; }
+    .cat-count { color: var(--muted); font-size:.85rem; }
+    .cat-actions { display:flex; align-items:center; gap:.5rem; }
+    .btn {
+      border:1px solid var(--border); background: var(--chip); color: var(--text);
+      border-radius:.6rem; padding:.35rem .6rem; cursor:pointer; font-weight:600;
+    }
+    .btn:hover { border-color: var(--accent); }
+
+    /* Lista de frases por categoria */
+    .phrases { display:flex; flex-direction: column; gap:.5rem; padding:.8rem; }
+    .phrase {
+      background: rgba(8,14,26,.7); border:1px solid var(--border); border-radius:.75rem;
+      padding:.6rem .7rem; line-height: 1.35rem; cursor: copy; position: relative;
+    }
+    .phrase:hover { border-color: var(--accent); box-shadow: 0 0 0 .15rem rgba(56,189,248,.08) inset; }
+    .copy-hint { position:absolute; right:.6rem; bottom:.45rem; color: var(--muted); opacity:.8; font-size:.74rem; }
+
+    /* FAB (canto inferior direito) */
     .fab {
       position: fixed; right: 1rem; bottom: 1rem; z-index: 20;
       width: 48px; height: 48px; border-radius: 9999px; display: grid; place-items: center;
@@ -91,31 +102,27 @@
     }
     .fab:active { transform: translateY(1px); }
 
-    /* Rodapé curto */
     footer { color: var(--muted); text-align: center; padding: .6rem 1rem 1.2rem; }
-
-    /* Auxiliar: esconde */
-    .hidden { display:none !important; }
 
     @media (max-width: 520px) {
       .search { display:none; }
       header { grid-template-columns: 1fr auto; }
       .header-right { display:none; }
-      .grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <!-- ESQUERDA: seletor de órgão (substitui o botão antigo de tamanho) -->
+      <!-- ESQUERDA: seletor de órgão -->
       <div class="brand org-select">
         <span class="dot" aria-hidden="true"></span>
         <label for="organSelect" class="sr-only">Órgão</label>
         <select id="organSelect"></select>
       </div>
 
-      <!-- CENTRO: busca (mantida, mas opcional) -->
+      <!-- CENTRO: busca (filtra as frases, mantendo agrupamento por categoria) -->
       <div class="search">
         <input id="searchInput" type="search" placeholder="Buscar frase… (Enter para aplicar)" />
       </div>
@@ -124,16 +131,16 @@
       <div class="header-right"></div>
     </header>
 
-    <!-- Barra de categorias do órgão selecionado -->
+    <!-- Barra de categorias (oculta neste modo) -->
     <nav class="categories" id="categoryBar"></nav>
 
-    <!-- Conteúdo: cards de frases -->
+    <!-- Conteúdo: cards de CATEGORIA, cada um com várias frases -->
     <main>
-      <div class="grid" id="cards"></div>
+      <div class="cat-grid" id="catGrid"></div>
     </main>
 
     <footer>
-      <small>Click para copiar • Tamanho: A/B/C no botão "+Aa" • Rotas com hash para compartilhar (#/orgao/categoria)</small>
+      <small>Click para copiar • Tamanho: A/B/C no botão "+Aa" • Rotas com hash (#/orgao/Órgão?q=busca)</small>
     </footer>
   </div>
 
@@ -146,7 +153,6 @@
   const ORG_ORDER = [];          // ordem estável de órgãos
   const DEFAULT_CATEGORY = 'Geral';
   let currentOrgan = null;
-  let currentCategory = null;
   let currentQuery = '';
 
   // ---------- Utilidades ----------
@@ -166,14 +172,7 @@
   }
 
   // ---------- Parser do laudario.txt ----------
-  /*
-   * Formatos aceitos de seção (entre colchetes):
-   *   [Órgão]
-   *   [Órgão > Categoria]
-   * Linhas seguintes (até próxima seção) são frases.
-   * Linhas vazias são ignoradas. Linhas iniciadas por # ou ; são comentários.
-   * Backward compat: se vier somente [Órgão], cai em categoria "Geral".
-   */
+  /* Aceita [Órgão] e [Órgão > Categoria]. */
   function parseLaudario(txt) {
     DB.clear(); ORG_ORDER.length = 0;
     let organ = null, category = null;
@@ -192,7 +191,6 @@
         continue;
       }
 
-      // É frase
       if (organ) {
         const catMap = DB.get(organ);
         if (!catMap.has(category)) catMap.set(category, []);
@@ -213,113 +211,139 @@
     if (currentOrgan && ORG_ORDER.includes(currentOrgan)) sel.value = currentOrgan;
   }
 
-  function renderCategories() {
-    const bar = qs('#categoryBar');
-    bar.innerHTML = '';
+  function renderCategoryCards() {
+    const grid = qs('#catGrid');
+    grid.innerHTML = '';
     if (!currentOrgan) return;
 
-    const cats = Array.from(DB.get(currentOrgan).keys()).sort((a,b) => a.localeCompare(b));
-    for (const cat of cats) {
-      const chip = document.createElement('button');
-      chip.className = 'chip' + (cat === currentCategory ? ' active' : '');
-      chip.textContent = cat;
-      chip.addEventListener('click', () => navigate(currentOrgan, cat));
-      bar.appendChild(chip);
+    const catMap = DB.get(currentOrgan);
+    if (!catMap) return;
+
+    // Ordena categorias alfabeticamente
+    const cats = Array.from(catMap.entries()).sort((a,b) => a[0].localeCompare(b[0]));
+
+    for (const [cat, list] of cats) {
+      // Filtra por busca
+      const items = currentQuery
+        ? list.filter(x => normalize(x).includes(normalize(currentQuery)))
+        : list.slice();
+
+      if (!items.length) continue; // Oculta categoria sem resultados
+
+      const card = document.createElement('section');
+      card.className = 'cat-card';
+
+      // Cabeçalho da categoria
+      const head = document.createElement('div');
+      head.className = 'cat-head';
+      const title = document.createElement('div');
+      title.className = 'cat-title';
+      title.textContent = cat;
+      const count = document.createElement('div');
+      count.className = 'cat-count';
+      count.textContent = `${items.length} frase${items.length>1?'s':''}`;
+
+      const actions = document.createElement('div');
+      actions.className = 'cat-actions';
+      const copyAllBtn = document.createElement('button');
+      copyAllBtn.className = 'btn';
+      copyAllBtn.textContent = 'Copiar tudo';
+      copyAllBtn.title = 'Copiar todas as frases desta categoria';
+      copyAllBtn.addEventListener('click', () => {
+        const txt = items.join('\n\n');
+        navigator.clipboard.writeText(txt).then(() => {
+          copyAllBtn.textContent = 'Copiado!';
+          setTimeout(() => (copyAllBtn.textContent = 'Copiar tudo'), 900);
+        });
+      });
+      actions.appendChild(copyAllBtn);
+
+      head.appendChild(title);
+      head.appendChild(count);
+      head.appendChild(actions);
+
+      // Lista de frases
+      const ul = document.createElement('div');
+      ul.className = 'phrases';
+
+      for (const text of items) {
+        const li = document.createElement('div');
+        li.className = 'phrase';
+        li.tabIndex = 0;
+        li.innerText = text;
+
+        const hint = document.createElement('small');
+        hint.className = 'copy-hint';
+        hint.textContent = 'Copiar';
+        li.appendChild(hint);
+
+        const copy = () => {
+          navigator.clipboard.writeText(text).then(() => {
+            hint.textContent = 'Copiado!';
+            setTimeout(() => (hint.textContent = 'Copiar'), 900);
+          });
+        };
+        li.addEventListener('click', copy);
+        li.addEventListener('keydown', (e) => { if (e.key === 'Enter') copy(); });
+
+        ul.appendChild(li);
+      }
+
+      card.appendChild(head);
+      card.appendChild(ul);
+      grid.appendChild(card);
     }
-  }
 
-  function renderCards() {
-    const wrap = qs('#cards');
-    wrap.innerHTML = '';
-    if (!currentOrgan || !currentCategory) return;
-
-    const all = DB.get(currentOrgan).get(currentCategory) || [];
-    const filtered = currentQuery
-      ? all.filter(x => normalize(x).includes(normalize(currentQuery)))
-      : all;
-
-    if (!filtered.length) {
+    // Caso nenhuma categoria tenha resultado
+    if (!grid.children.length) {
       const p = document.createElement('p');
       p.style.color = 'var(--muted)';
       p.textContent = 'Nenhuma frase encontrada.';
-      wrap.appendChild(p);
-      return;
-    }
-
-    for (const text of filtered) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.tabIndex = 0;
-      card.innerText = text;
-      const hint = document.createElement('small');
-      hint.className = 'copy-hint';
-      hint.textContent = 'Copiar';
-      card.appendChild(hint);
-
-      const copy = () => {
-        navigator.clipboard.writeText(text).then(() => {
-          hint.textContent = 'Copiado!';
-          setTimeout(() => (hint.textContent = 'Copiar'), 900);
-        });
-      };
-      card.addEventListener('click', copy);
-      card.addEventListener('keydown', (e) => { if (e.key === 'Enter') copy(); });
-
-      wrap.appendChild(card);
+      grid.appendChild(p);
     }
   }
 
-  // ---------- Navegação (hash router) ----------
+  // ---------- Navegação (hash router simplificado) ----------
   function parseHash() {
-    // Formato: #/orgao/<Órgão>/categoria/<Categoria>?q=...
-    const h = location.hash.slice(1); // remove #
+    // Novo formato: #/orgao/<Órgão>?q=busca
+    const h = location.hash.slice(1);
     const [path, queryStr] = h.split('?');
     const parts = (path || '').split('/').filter(Boolean);
-
     let org = parts[1] || null;
-    let cat = parts[3] || null;
     const query = new URLSearchParams(queryStr || '').get('q') || '';
-
-    return { org, cat, query };
+    return { org, query };
   }
 
-  function navigate(org, cat, query = currentQuery) {
+  function navigate(org, query = currentQuery) {
     if (!org) org = ORG_ORDER[0];
-    if (!cat) {
-      const firstCat = DB.get(org) ? Array.from(DB.get(org).keys())[0] : DEFAULT_CATEGORY;
-      cat = firstCat || DEFAULT_CATEGORY;
-    }
     const params = new URLSearchParams();
     if (query) params.set('q', query);
     const qsuf = params.toString();
-    location.hash = `#/orgao/${encodeURIComponent(org)}/categoria/${encodeURIComponent(cat)}${qsuf ? '?' + qsuf : ''}`;
+    location.hash = `#/orgao/${encodeURIComponent(org)}${qsuf ? '?' + qsuf : ''}`;
   }
 
   function applyRoute() {
     const r = parseHash();
     currentOrgan = r.org && DB.has(r.org) ? r.org : ORG_ORDER[0];
-    const hasCat = currentOrgan && DB.get(currentOrgan).has(r.cat || '');
-    currentCategory = hasCat ? r.cat : (currentOrgan ? Array.from(DB.get(currentOrgan).keys())[0] : null);
     currentQuery = r.query || '';
 
     // Sync UI
     renderOrganSelect();
-    renderCategories();
     qs('#searchInput').value = currentQuery;
-    renderCards();
+    renderCategoryCards();
   }
 
   window.addEventListener('hashchange', applyRoute);
 
   // ---------- Eventos de UI ----------
   qs('#organSelect').addEventListener('change', (e) => {
-    navigate(e.target.value, null, '');
+    navigate(e.target.value, '');
   });
 
   qs('#searchInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       currentQuery = e.currentTarget.value.trim();
-      navigate(currentOrgan, currentCategory, currentQuery);
+      navigate(currentOrgan, currentQuery);
     }
   });
 
@@ -330,28 +354,27 @@
     html.classList.remove(...sizes);
     const next = sizes[(idx + 1) % sizes.length];
     html.classList.add(next);
-    saveUI();
+    localStorage.setItem('ui.size', html.className);
   });
 
   // ---------- Inicialização ----------
   (async function init(){
-    restoreUI();
+    const cls = localStorage.getItem('ui.size');
+    if (cls) document.documentElement.className = cls; else document.documentElement.classList.add('sizeB');
     try {
       const res = await fetch('laudario.txt');
       const txt = await res.text();
       parseLaudario(txt);
 
-      // Defaults
       if (ORG_ORDER.length) {
         currentOrgan = ORG_ORDER[0];
-        currentCategory = Array.from(DB.get(currentOrgan).keys())[0] || DEFAULT_CATEGORY;
       }
 
       renderOrganSelect();
-      applyRoute(); // lê hash (se houver) e renderiza
+      applyRoute();
     } catch (e) {
       console.error(e);
-      qs('#cards').innerHTML = '<p style="color:var(--muted)">Erro ao carregar laudario.txt</p>';
+      qs('#catGrid').innerHTML = '<p style="color:var(--muted)">Erro ao carregar laudario.txt</p>';
     }
   })();
   </script>
