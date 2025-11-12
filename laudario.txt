@@ -84,8 +84,11 @@ Próstata com dimensões aumentadas, insinuando-se sobre o assoalho vesical.
 [Parede abdominal > Hérnia umbilical]
 Diminuta hérnia umbilical, sem evidência de protrusão de seu conteúdo.
 
-[Parede abdominal > Hérnia epigástrica]
+[Parede abdominal > Hérnia direta]
 Hérnias de parede abdominal no epigástrio (linha média) com protrusão de conteúdo adiposo, sem sinais inflamatórios.
+
+[Parede abdominal > Hérnia epigástrica]
+Protução de conteúdo adiposo medial ao vasos epigástricos inferiores com redução parcial ao repouso, sugerindo uma hérnia direta.
 
 [Parede abdominal > Diástase]
 Diástase do músculo retoabdominal infraumbilical.
@@ -203,3 +206,4 @@ Bexiga urinária com boa distensibilidade, forma e contornos normais. A parede v
 
 [Ovários > Não visualizado]
 Ovário direito/esquerdo não visualizado por provável atrofia e interposição de alças intestinais.
+
