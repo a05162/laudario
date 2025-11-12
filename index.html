@@ -12,11 +12,12 @@
       --text: #e5e7eb;        /* gray-200 */
       --accent: #38bdf8;      /* sky-400 */
       --accent-2: #22d3ee;    /* cyan-400 */
-      --card: #0b1220;        /* darker */
-      --chip: #0b2540;        /* chip bg */
-      --chip-active: #1d4ed8; /* indigo-600 */
       --border: #1f2937;      /* gray-800 */
-      --good: #16a34a;        /* green-600 */
+      /* Tons de azul (mais claros) para cartões */
+      --cat-bg: #0e2a47;      /* fundo do card de CATEGORIA */
+      --cat-head: #0f3457;    /* cabeçalho do card */
+      --phrase-bg: #123a63;   /* fundo de cada frase */
+      --phrase-border: #1a4a7c;/* borda de cada frase */
     }
     html, body { height: 100%; background: var(--bg); color: var(--text); }
     body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
@@ -38,12 +39,11 @@
     }
     .brand { display: flex; align-items: center; gap: .5rem; }
     .brand .dot { width: .6rem; height: .6rem; border-radius: 9999px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 0 .2rem rgba(34,211,238,.15); }
-    .brand h1 { font-size: 1.05rem; margin: 0; font-weight: 600; letter-spacing:.2px; }
 
     /* Seletor de órgão (canto superior esquerdo) */
     .org-select { display:flex; align-items:center; gap:.5rem; }
     .org-select select {
-      background: var(--chip); color: var(--text); border: 1px solid var(--border);
+      background: #0b2540; color: var(--text); border: 1px solid var(--border);
       border-radius: .65rem; padding: .45rem .6rem; outline: none; cursor: pointer;
     }
 
@@ -57,7 +57,7 @@
     /* Espaçador à direita do header */
     .header-right { justify-self: end; height: 1rem; }
 
-    /* Barra de categorias: oculta neste modo (renderiza tudo de uma vez) */
+    /* Barra de categorias: oculta (renderiza tudo de uma vez) */
     .categories { display:none; }
 
     /* Área principal */
@@ -68,29 +68,29 @@
       display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
     }
     .cat-card {
-      background: var(--card); border:1px solid var(--border); border-radius: 1rem; overflow: hidden; display:flex; flex-direction: column;
+      background: var(--cat-bg); border:1px solid #0c2038; border-radius: 1rem; overflow: hidden; display:flex; flex-direction: column;
+      box-shadow: 0 8px 24px rgba(2, 12, 24, .35);
     }
     .cat-head {
       display:flex; align-items:center; justify-content: space-between; gap:.75rem;
-      padding: .75rem .9rem; border-bottom:1px solid var(--border); background: linear-gradient(180deg, rgba(11,18,32,.7), rgba(11,18,32,.4));
+      padding: .75rem .9rem; border-bottom:1px solid #0c2038; background: linear-gradient(180deg, var(--cat-head), rgba(14,42,71,.8));
     }
     .cat-title { font-weight: 700; letter-spacing:.2px; }
-    .cat-count { color: var(--muted); font-size:.85rem; }
-    .cat-actions { display:flex; align-items:center; gap:.5rem; }
-    .btn {
-      border:1px solid var(--border); background: var(--chip); color: var(--text);
-      border-radius:.6rem; padding:.35rem .6rem; cursor:pointer; font-weight:600;
+    .cat-actions { display:flex; align-items:center; gap:.35rem; }
+    .btn-icon {
+      display:inline-grid; place-items:center; width: 32px; height: 32px; border-radius:.6rem;
+      border:1px solid #0c2038; background: rgba(255,255,255,.06); color: var(--text); cursor:pointer;
     }
-    .btn:hover { border-color: var(--accent); }
+    .btn-icon:hover { border-color: var(--accent); box-shadow: 0 0 0 .12rem rgba(56,189,248,.12) inset; }
 
     /* Lista de frases por categoria */
     .phrases { display:flex; flex-direction: column; gap:.5rem; padding:.8rem; }
     .phrase {
-      background: rgba(8,14,26,.7); border:1px solid var(--border); border-radius:.75rem;
+      background: var(--phrase-bg); border:1px solid var(--phrase-border); border-radius:.75rem;
       padding:.6rem .7rem; line-height: 1.35rem; cursor: copy; position: relative;
     }
     .phrase:hover { border-color: var(--accent); box-shadow: 0 0 0 .15rem rgba(56,189,248,.08) inset; }
-    .copy-hint { position:absolute; right:.6rem; bottom:.45rem; color: var(--muted); opacity:.8; font-size:.74rem; }
+    .copy-hint { position:absolute; right:.6rem; bottom:.45rem; color: rgba(229,231,235,.8); opacity:.8; font-size:.74rem; }
 
     /* FAB (canto inferior direito) */
     .fab {
@@ -239,27 +239,25 @@
       const title = document.createElement('div');
       title.className = 'cat-title';
       title.textContent = cat;
-      const count = document.createElement('div');
-      count.className = 'cat-count';
-      count.textContent = `${items.length} frase${items.length>1?'s':''}`;
 
       const actions = document.createElement('div');
       actions.className = 'cat-actions';
       const copyAllBtn = document.createElement('button');
-      copyAllBtn.className = 'btn';
-      copyAllBtn.textContent = 'Copiar tudo';
+      copyAllBtn.className = 'btn-icon';
+      copyAllBtn.setAttribute('aria-label', 'Copiar todas as frases desta categoria');
       copyAllBtn.title = 'Copiar todas as frases desta categoria';
+      copyAllBtn.textContent = '📋';
       copyAllBtn.addEventListener('click', () => {
         const txt = items.join('\n\n');
         navigator.clipboard.writeText(txt).then(() => {
-          copyAllBtn.textContent = 'Copiado!';
-          setTimeout(() => (copyAllBtn.textContent = 'Copiar tudo'), 900);
+          const prev = copyAllBtn.textContent;
+          copyAllBtn.textContent = '✓';
+          setTimeout(() => (copyAllBtn.textContent = prev), 900);
         });
       });
       actions.appendChild(copyAllBtn);
 
       head.appendChild(title);
-      head.appendChild(count);
       head.appendChild(actions);
 
       // Lista de frases
@@ -305,7 +303,7 @@
 
   // ---------- Navegação (hash router simplificado) ----------
   function parseHash() {
-    // Novo formato: #/orgao/<Órgão>?q=busca
+    // Formato: #/orgao/<Órgão>?q=busca
     const h = location.hash.slice(1);
     const [path, queryStr] = h.split('?');
     const parts = (path || '').split('/').filter(Boolean);
