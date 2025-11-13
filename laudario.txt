@@ -126,6 +126,12 @@ Calcificações no parênquima renal bilateralmente, mais evidentes em região m
 [Rim > Cistos]
 Cistos corticais exofíticos no rim direito, o maior medindo 21 mm (Bosniak I).
 
+[Rim > Hidronefrose]
+Hidronefrose leve a direita sem fator obstrutivo identificável.
+
+[Rim > Ureterocele]
+Imagem cística arredondada, anecogênica, localizada no assoalho da bexiga, adjacente ao meato ureteral esquerdo, compatível com ureterocele.
+
 [Pulmão > Opacidades reticulares]
 Discretas opacidades reticulares subpleurais e interlobulares predominando na porção posterior dos campos pulmonares inferiores.
 
@@ -206,4 +212,5 @@ Bexiga urinária com boa distensibilidade, forma e contornos normais. A parede v
 
 [Ovários > Não visualizado]
 Ovário direito/esquerdo não visualizado por provável atrofia e interposição de alças intestinais.
+
 
