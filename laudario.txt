@@ -187,7 +187,13 @@ Diminuta imagem nodular hipoatenuante no segmento VIII, medindo 6 mm, incaracter
 Houve surgimento de nódulos hepáticos hipovasculares (pelo menos 3), de aspecto neoplásico suspeito: segmento III (25 x 14 mm), segmento V (10 x 6 mm), segmento VI (10 x 10 mm).
 
 [Fígado/Vesícula > Cisto hepático]
-Cisto no segmento IVa hepático, medindo 8 mm.
+exceto por cisto de conteúdo anecoico, com fino septo interno, localizado no segmento _, medindo _ mm.
+
+[Fígado/Vesícula > Pólipos de vesícula biliar]
+A parede vesicular tem espessura normal, apresentando pequenas imagens nodulares ecogênicas aderidas, medindo até _ mm.
+
+[Fígado/Vesícula > Hemangioma]
+Formação nodular sólida, de contornos bem definidos, hiperecogênica e homogênea, desprovido de sombra acústica posterior, no segmento hepático _, medindo _ mm.
 
 [Via biliar > Ducto colédoco]
 Ducto colédoco dilatado (7 mm).
@@ -212,5 +218,6 @@ Bexiga urinária com boa distensibilidade, forma e contornos normais. A parede v
 
 [Ovários > Não visualizado]
 Ovário direito/esquerdo não visualizado por provável atrofia e interposição de alças intestinais.
+
 
 
