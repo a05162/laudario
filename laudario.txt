@@ -43,7 +43,7 @@ Cistos oleosos subcicatriciais esparsos à esquerda, medindo até cerca de 8 mm.
 Calcificações grosseiras na mama direita.
 
 [Mama > Pós-operatório]
-Cicatriz cutânea nos quadrantes laterais da mama [x] com desorganização arquitetural do parênquima sobrejacente, contornos lobulados com pregas radiais.
+Cicatriz cutânea nos quadrantes laterais da mama [x] com desorganização arquitetural do parênquima sobrejacente, compatível com alteração operatória.
 
 [Mama > Ginecomastia]
 Discreta ginecomastia bilateral simétrica.
@@ -69,16 +69,13 @@ Linfonodos não habituais pélvicos ilíacos internos e externos, ileocólicos e
 [Linfonodos > Hilos pulmonares]
 Linfonodos proeminentes nos hilos pulmonares e paratraqueal, medindo até 6 mm no menor eixo.
 
-[Geniturinário > Útero/anexos]
-Útero e anexos não caracterizados (status pós-operatório).
+[Útero> Histerectomia]
+Útero e anexos não caracterizados (status pós-operatório). Loja uterina livre.
 
-[Geniturinário > Ovários]
-Ovários não visualizados por provável atrofia e interposição de alças intestinais.
+[Útero> Miomas]
+Útero em anteversoflexão, de dimensões aumentadas, medindo _ mm, com volume de _ cm³. Os contornos uterinos são regulares e a ecotextura heterogênea à custa de formações nodulares hipoecogênicas de limites regulares, os maiores assim caracterizados: - submucoso, localizado na parede corporal anterior, medindo _ mm, (FIGO _); Formação nodular uterina de provável natureza miomatosa
 
-[Geniturinário > Útero]
-Útero não caracterizado (status pós-cirúrgico). Loja uterina livre.
-
-[Geniturinário > Próstata]
+[Próstata > Aumento próstatico]
 Próstata com dimensões aumentadas, insinuando-se sobre o assoalho vesical.
 
 [Parede abdominal > Hérnia umbilical]
@@ -217,7 +214,10 @@ Corpo vertebral de L4 com 2 focos radiodensos, de aspecto indeterminado, sugerin
 Bexiga urinária com boa distensibilidade, forma e contornos normais. A parede vesical apresenta trabeculações, sugestivo de bexiga de esforço.
 
 [Ovários > Não visualizado]
-Ovário direito/esquerdo não visualizado por provável atrofia e interposição de alças intestinais.
+Ovário direito/esquerdo não visualizado por provável atrofia e/ou interposição de alças intestinais.
+
+
+
 
 
 
